@@ -174,6 +174,7 @@ Run the application:
 docker run -d \
   --name student-management \
   --network student-network \
+  --restart unless-stopped \
   -p 8080:8080 \
   -e DB_PASSWORD \
   student-management:1.0
