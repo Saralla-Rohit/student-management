@@ -1,0 +1,83 @@
+ :root {
+  --primary: #5146e5; --primary-dark: #4035cb; --text: #202b3c;
+  --muted: #758096; --border: #e8eaf2; --surface: #fff;
+}
+.navbar { height: 76px; padding: 0 7%; display: flex; align-items: center; justify-content: space-between; background: #fff; border-bottom: 1px solid var(--border); }
+.brand { display: flex; align-items: center; gap: 11px; font-family: "Manrope", sans-serif; font-size: 21px; font-weight: 800; letter-spacing: -.7px; }
+.brand-icon { display: grid; place-items: center; width: 36px; height: 36px; color: #fff; background: var(--primary); border-radius: 11px; }
+.nav-links { display: flex; align-items: center; gap: 30px; font-size: 14px; font-weight: 600; color: #667085; }
+.nav-links > a.active:not(.nav-button) { color: var(--primary); }
+.nav-button, .primary-button { display: inline-flex; justify-content: center; align-items: center; gap: 8px; padding: 12px 19px; color: #fff; background: var(--primary); border: 1px solid var(--primary); border-radius: 9px; font-size: 14px; font-weight: 700; cursor: pointer; transition: background .2s, transform .2s; }
+.nav-button:hover, .primary-button:hover { background: var(--primary-dark); transform: translateY(-1px); }
+.home-page { max-width: 1160px; margin: 0 auto; padding: 68px 28px 80px; }
+.hero { padding: 56px 30px 72px; text-align: center; }
+.eyebrow { color: var(--primary); font-size: 11px; font-weight: 800; letter-spacing: 2px; }
+.hero h1, .page-heading h1, .form-card h1 { margin: 20px 0; font-family: "Manrope", sans-serif; font-size: clamp(34px, 5vw, 53px); line-height: 1.17; letter-spacing: -2px; }
+.hero h1 span { color: var(--primary); }
+.hero > p { max-width: 570px; margin: 0 auto; color: var(--muted); font-size: 16px; line-height: 1.9; }
+.hero-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 13px; margin-top: 30px; }
+.secondary-button { padding: 12px 19px; border: 1px solid #dedfee; border-radius: 9px; background: white; font-size: 14px; font-weight: 700; }
+.secondary-button:hover { border-color: var(--primary); }
+.hero-note { display: flex; justify-content: center; align-items: center; gap: 9px; margin-top: 29px; color: var(--muted); font-size: 12px; }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; background: #24b47e; }
+.feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.feature-card { padding: 27px; background: white; border: 1px solid var(--border); border-radius: 15px; }
+.feature-icon { display: inline-grid; place-items: center; width: 43px; height: 43px; border-radius: 12px; background: #efedff; color: var(--primary); font-size: 13px; font-weight: 800; }
+.feature-card h3 { margin: 22px 0 9px; font-family: "Manrope", sans-serif; font-size: 17px; }
+.feature-card p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.8; }
+.page-container { max-width: 1180px; margin: 0 auto; padding: 48px 28px 80px; }
+.page-heading { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+.page-heading h1 { margin: 10px 0; font-size: 36px; letter-spacing: -1.2px; }
+.page-heading p, .form-description { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.8; }
+.student-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 34px 0 24px; }
+.search-input { width: min(440px, 100%); padding: 13px 15px; background: white; border: 1px solid #e1e4ed; border-radius: 9px; font-size: 13px; }
+.search-input:focus, .form-card input:focus { border-color: var(--primary); outline: 3px solid #eeedff; }
+.student-count { color: var(--muted); font-size: 13px; white-space: nowrap; }
+.student-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.student-card { min-width: 0; padding: 23px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; transition: transform .2s, box-shadow .2s; }
+.student-card:hover { transform: translateY(-3px); box-shadow: 0 12px 35px #28345a0d; }
+.student-card-top { display: flex; align-items: center; justify-content: space-between; }
+.avatar { display: grid; place-items: center; width: 49px; height: 49px; border-radius: 14px; background: #efedff; color: var(--primary); font-family: "Manrope", sans-serif; font-size: 21px; font-weight: 800; }
+.student-id { padding: 6px 9px; color: #707991; background: #f5f6fa; border-radius: 6px; font-size: 11px; font-weight: 700; }
+.student-card h2 { overflow-wrap: anywhere; margin: 22px 0 5px; font-family: "Manrope", sans-serif; font-size: 18px; }
+.student-email { overflow-wrap: anywhere; margin: 0; color: var(--muted); font-size: 12px; }
+.student-details { display: grid; grid-template-columns: .75fr 1.25fr; gap: 12px; margin-top: 23px; padding: 18px 0; border-top: 1px solid #eff0f5; border-bottom: 1px solid #eff0f5; }
+.student-details div { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.student-details span { color: #8b93a7; font-size: 10px; font-weight: 800; letter-spacing: 1px; }
+.student-details strong { overflow-wrap: anywhere; font-size: 12px; }
+.card-actions { display: flex; gap: 10px; margin-top: 18px; }
+.edit-button, .delete-button { flex: 1; display: flex; justify-content: center; align-items: center; min-height: 39px; padding: 9px; border: 1px solid var(--border); border-radius: 8px; background: white; font-size: 12px; font-weight: 700; cursor: pointer; }
+.edit-button { color: var(--primary); background: #f5f4ff; border-color: #e5e2ff; }
+.edit-button:hover { background: #eae8ff; }
+.delete-button { color: #d34250; }
+.delete-button:hover { background: #fff0f1; border-color: #ffd2d6; }
+.empty-state { padding: 65px 20px; text-align: center; color: var(--muted); background: white; border: 1px dashed #dfe2ed; border-radius: 14px; }
+.empty-icon { margin-bottom: 12px; color: var(--primary); font-size: 36px; }
+.empty-state h2 { color: var(--text); font-family: "Manrope", sans-serif; font-size: 20px; }
+.empty-state p { margin-bottom: 25px; font-size: 13px; }
+.form-page { max-width: 650px; margin: 0 auto; padding: 38px 24px 70px; }
+.back-link { display: inline-block; margin-bottom: 23px; color: #68748b; font-size: 13px; font-weight: 600; }
+.back-link:hover { color: var(--primary); }
+.form-card { padding: 34px; background: white; border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 10px 40px #26345408; }
+.form-card h1 { margin: 13px 0 8px; font-size: 32px; letter-spacing: -1px; }
+.form-card form { display: flex; flex-direction: column; margin-top: 27px; }
+.form-card label { margin: 0 0 8px; font-size: 13px; font-weight: 700; }
+.form-card input { width: 100%; min-width: 0; margin-bottom: 21px; padding: 13px; border: 1px solid #e0e3ed; border-radius: 8px; background: #fff; color: var(--text); font-size: 13px; }
+.form-row { display: grid; grid-template-columns: .7fr 1.3fr; gap: 16px; }
+.form-submit { min-height: 46px; margin-top: 3px; }
+.error-message { margin: 20px 0; padding: 13px 15px; border: 1px solid #ffd3d7; border-radius: 9px; background: #fff1f2; color: #b42332; font-size: 13px; overflow-wrap: anywhere; }
+.error-message button { margin-left: 10px; color: inherit; background: transparent; border: 0; text-decoration: underline; cursor: pointer; }
+@media (max-width: 900px) { .student-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .navbar { padding: 0 4%; } .home-page { padding-top: 35px; } }
+@media (max-width: 600px) {
+  .navbar { height: auto; min-height: 70px; padding: 16px 5%; align-items: flex-start; flex-direction: column; gap: 17px; }
+  .nav-links { width: 100%; gap: 18px; flex-wrap: wrap; }
+  .nav-button { margin-left: auto; padding: 9px 12px; }
+  .hero { padding: 45px 0; } .hero h1 { font-size: 35px; letter-spacing: -1.5px; }
+  .feature-grid, .student-grid { grid-template-columns: 1fr; }
+  .page-container { padding: 32px 18px 60px; }
+  .page-heading { align-items: flex-start; flex-direction: column; }
+  .student-toolbar { align-items: flex-start; flex-direction: column; }
+  .search-input { width: 100%; }
+  .form-page { padding: 28px 15px 50px; } .form-card { padding: 23px 19px; }
+  .form-row { grid-template-columns: 1fr; gap: 0; }
+}
