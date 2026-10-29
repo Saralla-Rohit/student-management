@@ -15,12 +15,7 @@ Log into MySQL as an administrator and run:
 
 ```sql
 CREATE DATABASE student_management;
-CREATE USER 'student_app'@'localhost' IDENTIFIED BY 'change_me';
-GRANT ALL PRIVILEGES ON student_management.* TO 'student_app'@'localhost';
-FLUSH PRIVILEGES;
 ```
-
-If `student_app` already exists, use `ALTER USER` as appropriate or update the environment variables below. Do not use the example password for a public deployment.
 
 The app creates/updates the `students` table automatically.
 
