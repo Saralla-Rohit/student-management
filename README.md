@@ -1,167 +1,245 @@
 # Student Management System
 
-A full-stack Student Management application with a React frontend and a Spring Boot REST API, using MySQL for database persistence.
+A Spring Boot REST API for managing student records, deployed on Ubuntu Server using Docker and MySQL.
 
 ## Tech Stack
 
-### Frontend
-- React
-- TypeScript
-- Vite
-
-### Backend
 - Java 21
 - Spring Boot 3.5.7
-- Spring Web
-- Spring Data JPA
-- Spring Validation
+- Spring Data JPA / Hibernate
+- MySQL 9.7
 - Maven
-- Springdoc OpenAPI / Swagger UI
-
-### Database
-- MySQL
+- Docker
+- Swagger UI / OpenAPI
 
 ## Project Structure
 
 ```text
 student-management/
-├── frontend/
-│   └── React + TypeScript + Vite application
 ├── backend/
 │   ├── src/
-│   │   ├── main/
-│   │   └── test/
 │   ├── pom.xml
-│   └── ...
+│   ├── Dockerfile
+│   └── .dockerignore
 └── README.md
 ```
 
-## Prerequisites
+## 1. Create the Dockerfile
 
-Install the following before running the project:
+Create `backend/Dockerfile`:
 
-- Java 21
-- Maven
-- Node.js and npm
-- MySQL
+```dockerfile
+# Build stage
+FROM maven:3.9-eclipse-temurin-21 AS build
 
-## Backend Setup
+WORKDIR /app
+
+COPY pom.xml .
+COPY src ./src
+
+RUN mvn clean package -DskipTests
+
+# Runtime stage
+FROM eclipse-temurin:21-jre
+
+WORKDIR /app
+
+COPY --from=build /app/target/student-management-0.0.1-SNAPSHOT.jar app.jar
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
+```
+
+Create `backend/.dockerignore`:
+
+```text
+target/
+.git/
+.idea/
+.vscode/
+*.iml
+```
+
+## 2. Configure the Database Connection
+
+In `src/main/resources/application.properties`:
+
+```properties
+spring.datasource.url=jdbc:mysql://mysql:3306/student_management
+spring.datasource.username=root
+spring.datasource.password=${DB_PASSWORD}
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.open-in-view=false
+```
+
+The hostname `mysql` refers to the MySQL container on the shared Docker network.
+
+## 3. Build the Docker Image
 
 Navigate to the backend directory:
 
 ```bash
-cd backend
+cd ~/hosted-apps/student-management/backend
 ```
 
-Build the application:
+Build the image:
 
 ```bash
-mvn clean package
+docker build --no-cache -t student-management:1.0 .
 ```
 
-Run the Spring Boot application:
+Verify the image:
 
 ```bash
-mvn spring-boot:run
+docker images
 ```
 
-The backend runs on:
+## 4. Check the Existing MySQL Container
+
+```bash
+docker ps
+```
+
+Check its port mapping:
+
+```bash
+docker port mysql
+```
+
+Example:
 
 ```text
-http://localhost:8080
+3306/tcp -> 0.0.0.0:3307
 ```
 
-### Database Configuration
+In this example, port `3307` is exposed on the Ubuntu host, while MySQL listens on port `3306` inside Docker.
 
-Create the MySQL database and configure the database connection in the backend's application configuration.
+## 5. Create the Database
 
-Example database creation:
+Connect to MySQL from the Ubuntu host:
+
+```bash
+mysql -h 127.0.0.1 -P 3307 -u root -p
+```
+
+Enter your MySQL root password.
+
+Create the database:
 
 ```sql
 CREATE DATABASE student_management;
+
+SHOW DATABASES;
+
+EXIT;
 ```
 
-Configure the following properties with the credentials used in your environment:
+## 6. Create the Docker Network
 
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/student_management
-spring.datasource.username=${DB_USERNAME}
-spring.datasource.password=${DB_PASSWORD}
-```
-
-Ensure that the configured MySQL user has permission to access the database.
-
-## API Documentation
-
-The project uses Springdoc OpenAPI to generate API documentation and provide Swagger UI.
-
-The Maven dependency used with Spring Boot 3.5.7 is:
-
-```xml
-<dependency>
-    <groupId>org.springdoc</groupId>
-    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-    <version>2.8.17</version>
-</dependency>
-```
-
-Once the backend is running, access:
-
-- **Swagger UI:** http://localhost:8080/swagger-ui/index.html
-- **OpenAPI JSON:** http://localhost:8080/v3/api-docs
-
-## Frontend Setup
-
-Open a separate terminal and navigate to the frontend directory:
+Create a network so the Spring Boot and MySQL containers can communicate:
 
 ```bash
-cd frontend
+docker network create student-network
 ```
 
-Install the dependencies:
+Connect the existing MySQL container to it:
 
 ```bash
-npm install
+docker network connect student-network mysql
 ```
 
-Start the development server:
+Verify the network:
 
 ```bash
-npm run dev
+docker network inspect student-network
 ```
 
-Vite will display the local URL in the terminal, usually:
+If the network already exists or MySQL is already connected, do not recreate or reconnect it.
+
+## 7. Run the Spring Boot Container
+
+Read the MySQL root password without displaying it in the terminal:
+
+```bash
+read -rsp "MySQL root password: " DB_PASSWORD
+echo
+```
+
+Run the application:
+
+```bash
+docker run -d \
+  --name student-management \
+  --network student-network \
+  -p 8080:8080 \
+  -e DB_PASSWORD \
+  student-management:1.0
+```
+
+Clear the shell variable:
+
+```bash
+unset DB_PASSWORD
+```
+
+## 8. Verify the Application
+
+Check the running container:
+
+```bash
+docker ps
+```
+
+View application logs:
+
+```bash
+docker logs -f student-management
+```
+
+Look for messages indicating that Hibernate connected to MySQL and Tomcat started on port `8080`.
+
+Press `Ctrl+C` to stop following the logs. This does not stop the container.
+
+## 9. Access Swagger UI
+
+Open this URL in your browser:
 
 ```text
-http://localhost:5173
+http://SERVER-IP:8080/swagger-ui/index.html
 ```
 
-## Running the Full-Stack Application
+Replace `SERVER-IP` with your Ubuntu Server's IP address.
 
-1. Start the MySQL server.
-2. Create the `student_management` database and configure the backend credentials.
-3. Start the Spring Boot backend on port `8080`.
-4. Start the React frontend using Vite.
-5. Configure the frontend API base URL to point to the backend.
-6. Open the frontend URL displayed by Vite.
+OpenAPI specification:
 
-## Development Notes
+```text
+http://SERVER-IP:8080/v3/api-docs
+```
 
-- The backend is a Maven-based Spring Boot application.
-- The frontend is built with React, TypeScript, and Vite.
-- Spring Data JPA handles database persistence.
-- Spring Validation supports request validation.
-- Springdoc OpenAPI provides API documentation and Swagger UI.
-- Keep database credentials out of version control.
+## 10. Database and Port Reference
 
-## Future Improvements
+| Component | Value |
+|---|---|
+| Docker image | `student-management:1.0` |
+| Application container | `student-management` |
+| MySQL container | `mysql` |
+| Docker network | `student-network` |
+| Database | `student_management` |
+| MySQL host port | `3307` |
+| MySQL container port | `3306` |
+| Spring Boot port | `8080` |
+| Container-to-container DB URL | `jdbc:mysql://mysql:3306/student_management` |
 
-Potential additions as development progresses:
+**Important:** Host port `3307` is for connecting from the Ubuntu host. The Spring Boot container uses `mysql:3306` through the shared Docker network.
 
-- Authentication and authorization
-- Search, filtering, and pagination
-- Improved form validation and error handling
-- Automated backend and frontend tests
-- Docker-based deployment
-- CI/CD integration
+## Current Deployment Status
 
+- [x] Docker image built
+- [x] MySQL database created
+- [x] Docker network configured
+- [x] Spring Boot container started
+- [x] Application connected to MySQL
+- [x] Swagger UI accessible
