@@ -8,6 +8,8 @@ frontend/.env.*
 # Backend
 backend/target/
 backend/bin/
+backend/src/main/resources/application.properties
+
 
 # IDE
 .idea/

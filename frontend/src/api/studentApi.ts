@@ -1,6 +1,13 @@
+
 import type { Student, StudentInput } from "../types/Student";
 
-const API_URL = "http://localhost:8080/api/students";
+const API_URL = "http://localhost:8082/api/students";
+
+interface ApiResponse<T> {
+  status: string;
+  message: string;
+  data: T;
+}
 
 async function request<T>(
   url: string,
@@ -27,22 +34,31 @@ async function request<T>(
 }
 
 export const studentApi = {
-  getAll: () => request<Student[]>(API_URL),
+  getAll: async () => {
+    const response = await request<ApiResponse<Student[]>>(API_URL);
+    return response.data;
+  },
 
-  getById: (id: number) =>
-    request<Student>(`${API_URL}/${id}`),
+  getById: async (id: number) => {
+    const response = await request<ApiResponse<Student>>(`${API_URL}/${id}`);
+    return response.data;
+  },
 
-  create: (student: StudentInput) =>
-    request<Student>(API_URL, {
+  create: async (student: StudentInput) => {
+    const response = await request<ApiResponse<Student>>(API_URL, {
       method: "POST",
       body: JSON.stringify(student),
-    }),
+    });
+    return response.data;
+  },
 
-  update: (id: number, student: StudentInput) =>
-    request<Student>(`${API_URL}/${id}`, {
+  update: async (id: number, student: StudentInput) => {
+    const response = await request<ApiResponse<Student>>(`${API_URL}/${id}`, {
       method: "PUT",
       body: JSON.stringify(student),
-    }),
+    });
+    return response.data;
+  },
 
   delete: (id: number) =>
     request<void>(`${API_URL}/${id}`, {

@@ -9,7 +9,8 @@ export default function Home() {
         <p>
           A simple place to view student information, add new students,
           and manage academic records with ease.
-        </p>
+        </p>HESITATION LEFT THE CHAT 💀
+
         <div className="hero-actions">
           <Link to="/students" className="primary-button">View Students →</Link>
           <Link to="/students/add" className="secondary-button">+ Add a Student</Link>

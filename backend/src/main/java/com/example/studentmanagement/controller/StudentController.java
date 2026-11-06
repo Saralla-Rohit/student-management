@@ -1,9 +1,13 @@
 package com.example.studentmanagement.controller;
 
 import com.example.studentmanagement.entity.Student;
+import com.example.studentmanagement.response.ApiResponse;
 import com.example.studentmanagement.service.StudentService;
+
 import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,36 +19,80 @@ import java.util.List;
     "https://student-mgmt.rohitnet.dpdns.org"
 })
 public class StudentController {
-    private final StudentService service;
 
-    public StudentController(StudentService service) {
-        this.service = service;
+    private final StudentService studentService;
+
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
     }
 
     @GetMapping
-    public List<Student> getAll() {
-        return service.getAll();
+    public ResponseEntity<ApiResponse<List<Student>>> getAllStudents() {
+
+        List<Student> students = studentService.getAll();
+
+        String message = students.isEmpty()
+                ? "No students found"
+                : "Students retrieved successfully";
+
+        return ResponseEntity.ok(
+                new ApiResponse<>("SUCCESS", message, students)
+        );
     }
 
     @GetMapping("/{id}")
-    public Student getById(@PathVariable Long id) {
-        return service.getById(id);
+    public ResponseEntity<ApiResponse<Student>> getStudentById(
+            @PathVariable Long id) {
+
+        Student student = studentService.getById(id);
+
+        return ResponseEntity.ok(
+                new ApiResponse<>("SUCCESS", "Student retrieved successfully", student)
+        );
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Student create(@Valid @RequestBody Student student) {
-        return service.create(student);
+    public ResponseEntity<ApiResponse<Student>> createStudent(
+            @Valid @RequestBody Student student) {
+
+        Student savedStudent = studentService.create(student);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ApiResponse<>(
+                        "SUCCESS",
+                        "Student added successfully",
+                        savedStudent
+                ));
     }
 
     @PutMapping("/{id}")
-    public Student update(@PathVariable Long id, @Valid @RequestBody Student student) {
-        return service.update(id, student);
+    public ResponseEntity<ApiResponse<Student>> updateStudent(
+            @PathVariable Long id,
+            @Valid @RequestBody Student student) {
+
+        Student updatedStudent = studentService.update(id, student);
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        "SUCCESS",
+                        "Student updated successfully",
+                        updatedStudent
+                )
+        );
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+    public ResponseEntity<ApiResponse<Void>> deleteStudent(
+            @PathVariable Long id) {
+
+        studentService.delete(id);
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        "SUCCESS",
+                        "Student deleted successfully",
+                        null
+                )
+        );
     }
 }
