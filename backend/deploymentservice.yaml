@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: student-management-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: student-management
+  template:
+    metadata:
+      labels:
+        app: student-management
+    spec:
+      containers:
+        - name: student-management
+          image: callmee6/student-management:1.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8082
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: student-management-service
+spec:
+  selector:
+    app: student-management
+  ports:
+    - protocol: TCP
+      port: 8082
+      targetPort: 8082
+  type: NodePort
