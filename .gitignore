@@ -1,4 +1,3 @@
-cat > .gitignore <<'EOF'
 # Frontend
 frontend/node_modules/
 frontend/dist/
@@ -9,7 +8,6 @@ frontend/.env.*
 backend/target/
 backend/bin/
 backend/src/main/resources/application.properties
-
 
 # IDE
 .idea/
@@ -22,4 +20,3 @@ backend/.settings/
 .env
 *.log
 .DS_Store
-EOF
