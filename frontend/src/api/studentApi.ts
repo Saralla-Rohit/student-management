@@ -1,7 +1,7 @@
 
 import type { Student, StudentInput } from "../types/Student";
 
-const API_URL = "http://localhost:8082/api/students";
+const API_URL = "http://192.168.49.2:30978/api/students";
 
 interface ApiResponse<T> {
   status: string;

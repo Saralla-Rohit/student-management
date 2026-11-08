@@ -1,0 +1,25 @@
+cat > .gitignore <<'EOF'
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.*
+
+# Backend
+backend/target/
+backend/bin/
+backend/src/main/resources/application.properties
+
+
+# IDE
+.idea/
+.vscode/
+backend/.classpath
+backend/.project
+backend/.settings/
+
+# Environment and OS files
+.env
+*.log
+.DS_Store
+EOF
