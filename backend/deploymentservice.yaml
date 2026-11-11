@@ -15,10 +15,14 @@ spec:
       containers:
         - name: student-management
           image: callmee6/student-management:latest
-          imagePullPolicy: Always
           ports:
             - containerPort: 8082
-
+          env:
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: student-db-secret
+                  key: DB_PASSWORD
 ---
 
 apiVersion: v1
