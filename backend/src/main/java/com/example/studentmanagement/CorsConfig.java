@@ -16,6 +16,7 @@ public class CorsConfig {
                 registry.addMapping("/api/**")
                         .allowedOrigins(
                                 "http://localhost:5173",
+                                "http://192.168.31.47:30080",
                                 "http://192.168.49.2:30080",
                                 "https://student-mgmt.rohitnet.dpdns.org"
                         )
