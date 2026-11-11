@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: student-management
-          image: callmee6/student-management:1.0
+          image: callmee6/student-management:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8082
