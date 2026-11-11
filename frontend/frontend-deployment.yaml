@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: student-frontend
-          image: student-frontend:1.0
-          imagePullPolicy: IfNotPresent
+          image: callmee6/student-management-frontend:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
